@@ -10,15 +10,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="69" Margin="254,188,0,0" VerticalAlignment="Top" Width="582" RadiusY="8"/>
-        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="69" Margin="253,188,0,0" VerticalAlignment="Top" Width="563" RadiusY="8"/>
-        <TextBlock HorizontalAlignment="Left" Margin="287,17,0,0" TextWrapping="Wrap" Text="Classe C#" VerticalAlignment="Top" FontSize="48" FontFamily="Roboto"/>
-        <TextBlock HorizontalAlignment="Left" Margin="271,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontFamily="Roboto" Text="Apprenants" Foreground="White"/>
-        <TextBlock HorizontalAlignment="Left" Margin="453,205,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Roboto" Text="Present" Foreground="White"/>
-        <TextBlock HorizontalAlignment="Left" Margin="595,205,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Roboto" Text="Absent" Foreground="White"/>
-        <TextBlock HorizontalAlignment="Left" Margin="728,204,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Roboto" Text="Retard" Foreground="White"/>
-         
-        <DataGrid x:Name="dg" IsReadOnly="True" Cursor="Arrow" AutoGenerateColumns="False" Margin="184,185,18,264" SelectedIndex="0">
+        <TextBlock HorizontalAlignment="Left" Margin="742,14,0,0" TextWrapping="Wrap" Text="Classe C#" VerticalAlignment="Top" FontSize="24" FontFamily="Roboto" Foreground="#FFFEFEFE"/>
+        <TextBlock HorizontalAlignment="Left" Margin="480,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" FontFamily="Roboto" Text="Chercher par le nom :" Foreground="White" Width="210"/>
+
+        <DataGrid x:Name="dg" IsReadOnly="True" Cursor="Arrow" AutoGenerateColumns="False" Margin="184,185,18,264" SelectedIndex="0" Visibility="Hidden">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="50" Header="#" Binding="{Binding [User Id]}"></DataGridTextColumn>
                 <DataGridTextColumn Width="50" Header="name " Binding="{Binding [Full Name]}"></DataGridTextColumn>
@@ -32,23 +27,25 @@
                 <DataGridTemplateColumn x:Name="abs_temp" Header="Absent">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox x:Name="check_absent" IsChecked="{Binding absent, Mode=TwoWay}" Checked="check_absent_checked" Unchecked="check_absent_unchecked" />
+                            <RadioButton GroupName="button" x:Name="check_absent" IsChecked="{Binding absent, Mode=TwoWay}" Checked="check_absent_checked" Unchecked="check_absent_unchecked" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn x:Name="late_temp"  Header="Retard">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox x:Name="check_retard"  IsChecked="{Binding retard, Mode=TwoWay}" Checked="check_retard_checked" Unchecked="check_retard_unchecked" />
+                            <RadioButton GroupName="button" x:Name="check_retard"  IsChecked="{Binding retard, Mode=TwoWay}" Checked="check_retard_checked" Unchecked="check_retard_unchecked" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btn_ajouter_ab" Content="Ajouter absence" HorizontalAlignment="Left" Margin="506,139,0,0" VerticalAlignment="Top" Width="351" Height="47" Background="#FFD17A7A" Click="btn_ajouter_ab_Click"/>
-        <Button x:Name="afficher_les_absents" Content="Afficher les absents" HorizontalAlignment="Left" Margin="187,140,0,0" VerticalAlignment="Top" Width="318" Height="44" Background="#FFF3B34E" Click="afficher_les_absents_Click"/>
+        <Button x:Name="btn_ajouter_ab" Content="Ajouter absence" HorizontalAlignment="Left" Margin="506,140,0,0" VerticalAlignment="Top" Width="349" Height="46" Background="#FFD17A7A" Click="btn_ajouter_ab_Click"/>
+        <Button x:Name="afficher_les_absents" Content="Afficher les absents" HorizontalAlignment="Left" Margin="184,140,0,0" VerticalAlignment="Top" Width="322" Height="45" Background="#FFF3B34E" Click="afficher_les_absents_Click"/>
         <DataGrid HorizontalAlignment="Left" Height="591" Margin="257,104,0,0" VerticalAlignment="Top" Width="595" Visibility="Hidden"/>
-        
+        <DataGrid x:Name="dg1" HorizontalAlignment="Left" Height="320" Margin="185,185,0,0" VerticalAlignment="Top" Width="670"/>
+        <TextBox x:Name="text_search" HorizontalAlignment="Left" Height="30" Margin="695,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" TextChanged="text_search_TextChanged"/>
+
     </Grid>
 </Window>

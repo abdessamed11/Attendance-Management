@@ -44,9 +44,10 @@ namespace Attendance
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-
+            dg.Visibility = Visibility.Visible;
+            dg1.Visibility = Visibility.Hidden;
             conn.Open();
-
+            
             Cmd = new SqlCommand("select u.[User Id],u.[Full Name],u.Email,c.[Class Name] from Users u inner join Classes c on u.[Class Id]=c.[Id Class] where u.[Role Id]=4", conn);
             SqlDataReader dr = Cmd.ExecuteReader();
             DataTable t = new DataTable();
@@ -59,27 +60,18 @@ namespace Attendance
             late_temp.Visibility = Visibility.Hidden;
             abs_temp.Visibility = Visibility.Hidden;
 
-
         }
 
         private void btn_ajouter_ab_Click(object sender, RoutedEventArgs e)
         {
+            dg.Visibility = Visibility.Visible;
+            dg1.Visibility = Visibility.Hidden;
             late_temp.Visibility = Visibility.Visible;
             abs_temp.Visibility = Visibility.Visible;
 
         }
 
-        private void check_absent_checked(object sender, RoutedEventArgs e)
-        {
-            
-            check_retard_unchecked(sender, e);
-            DataRowView row = dg.SelectedItem as DataRowView;
-            int id_student =Convert.ToInt32(row.Row[0].ToString());          
-            conn.Open();
-            SqlCommand cmd1 = new SqlCommand("INSERT INTO Attendance (Date, IsJustified, [Student id],Absent,Retard) VALUES ('" + date + "','false','"+id_student+"', 'oui' , 'non')", conn);            
-            cmd1.ExecuteNonQuery();
-            conn.Close();
-        }
+        
 
         private void check_absent_unchecked(object sender, RoutedEventArgs e)
         {
@@ -118,19 +110,94 @@ namespace Attendance
 
         private void afficher_les_absents_Click(object sender, RoutedEventArgs e)
         {
-            conn.Open();
+            
+            if (conn.State == ConnectionState.Closed)
+            { 
+                conn.Open();
+                dg.Visibility = Visibility.Hidden;
+                dg1.Visibility = Visibility.Visible;
+               
 
-            Cmd = new SqlCommand("select u.[User Id],u.[Full Name],u.Email,c.[Class Name] from Users u inner join Classes c on u.[Class Id]=c.[Id Class] where u.[Role Id]=4", conn);
-            SqlDataReader dr = Cmd.ExecuteReader();
-            DataTable t = new DataTable();
-            t.Load(dr);
-            dg.ItemsSource = t.DefaultView;
-            dr.Close();
+                Cmd = new SqlCommand("select a.[Date] , u.[Full Name] , a.[Description] ,c.[Class Name] From Users u inner join Attendance a on a.[Student Id] =u.[User Id] inner join Classes c on c.[Id Class]=u.[Class Id]", conn);
+                SqlDataReader dr = Cmd.ExecuteReader();
+                DataTable t = new DataTable();
+                t.Load(dr);
+                dr.Close();
+                dg1.ItemsSource = t.DefaultView;
+            }
+            else
+            {
+                dg.Visibility = Visibility.Hidden;
+                dg1.Visibility = Visibility.Visible;
+
+
+                Cmd = new SqlCommand("select u.[User Id],u.[Full Name],u.Email,c.[Class Name] from Users u inner join Classes c on u.[Class Id]=c.[Id Class] where u.[Role Id]=4", conn);
+                SqlDataReader dr = Cmd.ExecuteReader();
+                DataTable t = new DataTable();
+                t.Load(dr);
+                dr.Close();
+                dg1.ItemsSource = t.DefaultView;
+            }
+
+        
+            
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void check_absent_checked(object sender, RoutedEventArgs e)
+        {
+            check_retard_unchecked(sender, e);
+            DataRowView row = dg.SelectedItem as DataRowView;
+            int id_student = Convert.ToInt32(row.Row[0].ToString());
+            conn.Open();
+            SqlCommand cmd1 = new SqlCommand("INSERT INTO Attendance (Date, IsJustified, [Student id],Absent,Retard) VALUES ('" + date + "','false','" + id_student + "', 'oui' , 'non')", conn);
+            cmd1.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        private void text_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+                dg.Visibility = Visibility.Visible;
+                dg1.Visibility = Visibility.Hidden;
+                late_temp.Visibility = Visibility.Visible;
+                abs_temp.Visibility = Visibility.Visible;
+                string text = text_search.Text;
+                Cmd = new SqlCommand("select u.[User Id],u.[Full Name],u.Email,c.[Class Name] from Users u inner join Classes c on u.[Class Id]=c.[Id Class] where u.[Role Id]=4 and u.[Full Name] like '%" + text + "%' ", conn);
+                SqlDataReader dr = Cmd.ExecuteReader();
+                DataTable t = new DataTable();
+                t.Load(dr);
+                dg.ItemsSource = t.DefaultView;
+                dr.Close();
+
+                conn.Close();
+            }
+            else
+            {
+                dg.Visibility = Visibility.Visible;
+                dg1.Visibility = Visibility.Hidden;
+                late_temp.Visibility = Visibility.Visible;
+                abs_temp.Visibility = Visibility.Visible;
+                string text = text_search.Text;
+                Cmd = new SqlCommand("select u.[User Id],u.[Full Name],u.Email,c.[Class Name] from Users u inner join Classes c on u.[Class Id]=c.[Id Class] where u.[Role Id]=4 and u.[Full Name] like '%" + text + "%' ", conn);
+                SqlDataReader dr = Cmd.ExecuteReader();
+                DataTable t = new DataTable();
+                t.Load(dr);
+                dg.ItemsSource = t.DefaultView;
+                dr.Close();
+
+                conn.Close();
+            }
+                
+
+            
         }
     }
     }
