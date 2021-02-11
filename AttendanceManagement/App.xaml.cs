@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Attendance
+namespace AttendanceManagement
 {
     /// <summary>
-    /// Logique d'interaction pour App.xaml
+    /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
